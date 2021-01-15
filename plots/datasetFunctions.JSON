@@ -1,0 +1,21 @@
+[
+    {
+        "id": 1,
+        "name": "spaceindex"
+    },
+    {
+        "id": 2,
+        "name": "boxcovering",
+        "parent": 1
+    },
+    {
+        "id": 3,
+        "name": "coordintervals",
+        "parent": 1
+    },
+    {
+        "id": 4,
+        "name": "boundingbox",
+        "parent": 1
+    }
+]
