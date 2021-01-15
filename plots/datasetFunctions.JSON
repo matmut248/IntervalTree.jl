@@ -16,6 +16,11 @@
     {
         "id": 4,
         "name": "boundingbox",
-        "parent": [1,2]
+        "parent": 1
+    },
+    {
+        "id": 4,
+        "name": "boundingbox",
+        "parent": 2
     }
 ]
