@@ -2,25 +2,35 @@
     {
         "id": 1,
         "name": "spaceindex"
+        "x": 360,
+        "y": 360
     },
     {
         "id": 2,
         "name": "boxcovering",
         "parent": 1
+        "x": 400,
+        "y": 400
     },
     {
         "id": 3,
         "name": "coordintervals",
         "parent": 1
+        "x": 320,
+        "y": 320
     },
     {
         "id": 4,
         "name": "boundingbox",
         "parent": 1
+        "x": 320,
+        "y": 400
     },
     {
         "id": 4,
         "name": "boundingbox",
         "parent": 2
+        "x": 320,
+        "y": 400
     }
 ]
