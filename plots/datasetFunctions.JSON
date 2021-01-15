@@ -16,6 +16,6 @@
     {
         "id": 4,
         "name": "boundingbox",
-        "parent": 1
+        "parent": [1,2]
     }
 ]
