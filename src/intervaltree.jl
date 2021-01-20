@@ -12,9 +12,17 @@ La funzione boundingbox serve a creare il bounding Box di una cella,
 cioè la scatola di misura più piccola (area, volume, ipervolume) entro cui sono contenuti tutti i punti.
 """
 function boundingbox(vertices::Lar.Points)
-    minimum = mapslices(x->min(x...), vertices, dims=2)
-    maximum = mapslices(x->max(x...), vertices, dims=2)
-    return minimum, maximum
+    firstDim = vertices[1,:]
+	secondDim = vertices[2,:]
+	if (size(vertices,1)==3)
+		thirdDim = vertices[3,:]
+		minimum = hcat([min(firstDim...), min(secondDim...), min(thirdDim...)])
+		maximum = hcat([max(firstDim...), max(secondDim...), max(thirdDim...)])
+	else
+		minimum = hcat([min(firstDim...), min(secondDim...)])
+		maximum = hcat([max(firstDim...), max(secondDim...)])
+	end
+    return minimum,maximum
  end
 
 """
@@ -98,7 +106,7 @@ julia> Sigma =  spaceindex(model2d);
 ```
 
 # Example 3D
-
+V = hcat([[0.,0,0],[1,0,3],[1,1,2],[0,1,1],[2,1,0]]...);
 ```julia
 model = model3d
 Sigma =  spaceindex(model3d);
@@ -152,7 +160,7 @@ end
 """
 rimuove le intersezioni contenute in 'covers' che i boundingbox hanno con se stessi 
 """
-function removeSelfIntersection!(covers::Array{Array{Int64,1},1})
+function removeSelfIntersection!(covers::Array{Array{Any,1},1})
 	for k=1:length(covers)
 		covers[k] = setdiff(covers[k],[k])	#toglie le intersezioni con se stesso 
 	end
