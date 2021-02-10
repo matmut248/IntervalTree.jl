@@ -5,10 +5,9 @@ using DataStructures,IntervalTrees
 include("../examples/tetGrid.jl")
 
 
-"""
-Questi sono i test del package LinearAlgebraicRepresentation.
-Il codice rivisitato continua a soddisfare tutti i test.
-"""
+
+#Questi sono i test del package LinearAlgebraicRepresentation.
+#Il codice rivisitato continua a soddisfare tutti i test.
 @testset "spaceindex tests" begin
 
 	# 2x2x2 cuboidal grid for 1-, 2-, and 3-dim tests
@@ -145,9 +144,8 @@ Il codice rivisitato continua a soddisfare tutti i test.
 	end
 end
 
-"""
-test delle nuove funzioni
-"""
+
+#test delle nuove funzioni
 @testset "test nuove funzioni" begin
 	
 	@testset "createIntervalTree test" begin
@@ -192,9 +190,7 @@ test delle nuove funzioni
 
 end
 
-"""
-test di un caso complesso: griglia tridimensionale con 2 tetraedri randomici su ogni punto intero della griglia
-"""
+#test di un caso complesso: griglia tridimensionale con 2 tetraedri randomici su ogni punto intero della griglia
 @testset "tetgrid test" begin
 	"""
 	funzione che ricava tutte le coppie di vertici opposti del bounding box
@@ -230,7 +226,6 @@ test di un caso complesso: griglia tridimensionale con 2 tetraedri randomici su 
 
 	(V,FV,EV) = tetgrid.randomTetGrid()
 	cover = spaceindex((V,FV))
-	println(length(FV))
 	cells = [V[:,FV[k]] for k = 1:length(FV)]
 	bb = [hcat(boundingbox(c)...) for c in cells]
 
