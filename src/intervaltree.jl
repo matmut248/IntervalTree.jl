@@ -144,7 +144,7 @@ che intersecano l'i-esimo bounding box
 """
 function addIntersection!(covers::Array{Array{Int64,1},1}, i::Int64, iterator)
     splice!(covers[i],1)		#splice serve a togliere gli zeri iniziali all'interno di covers
-    for x in iterator
+    @threads for x in collect(iterator)
         append!(covers[i],x.value)
     end
 end
