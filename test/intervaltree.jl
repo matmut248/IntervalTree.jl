@@ -219,16 +219,22 @@ end
 		x21,y21,z21 = bb2[1:3]
 		x22,y22,z22 = bb2[4:6]
 
+		#si controlla re il primo vertice di bb1 è contenuto in bb2
+		#oppure se bb1 contiene bb2 
 		first = ((x11>=x21 && x11<=x22) || (x11<=x21 && x12>=x22)) && ((y11>=y21 && y11<=y22) || (y11<=y21 && y12>=y22)) && ((z11>=z21 && z11<=z22) || (z11<=z21 && z12>=z22))
+		#si controlla se il secondo vertice di bb1 è contenuto in bb2 
 		second = (x12>=x21 && x12<=x22) && (y12>=y21 && y12<=y22) && (z12>=z21 && z12<=z22)
+
 		return first || second
 	end
 
+	#creazione del modello complesso
 	(V,FV,EV) = tetgrid.randomTetGrid()
 	cover = spaceindex((V,FV))
 	cells = [V[:,FV[k]] for k = 1:length(FV)]
 	bb = [hcat(boundingbox(c)...) for c in cells]
 
+	#testing delle intersezioni
 	for j = 1:length(bb)
 		for i = 1:length(cover[j])
 			p1,p2,p3,p4 = buildPoints(bb[j])
@@ -240,8 +246,9 @@ end
 		end
 	end
 
+	#testing delle non intersezioni
 	for j = 1:length(bb)
-		noIntersection = setdiff((h for h = 1:length(FV)),cover[j])
+		noIntersection = setdiff((h for h = 1:length(FV)),cover[j])		#tutti i bb che non intersecano il j-esimo bb
 		for i = 1:length(noIntersection)
 			if bb[j] != bb[noIntersection[i]]
 				p1,p2,p3,p4 = buildPoints(bb[j])
