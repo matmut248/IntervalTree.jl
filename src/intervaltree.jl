@@ -66,22 +66,22 @@ function spaceindex(model::Lar.LAR)::Array{Array{Int,1},1}
     cellpoints = [ V[:,CV[k]]::Lar.Points for k=1:length(CV) ]		    #calcola le celle
     bboxes = [hcat(boundingbox(cell)...) for cell in cellpoints]    #calcola i boundingbox delle celle
     
-    xboxdict = coordintervals(1,bboxes)
-    yboxdict = coordintervals(2,bboxes)
+    xboxdict = Threads.@spawn coordintervals(1,bboxes)
+    yboxdict = Threads.@spawn coordintervals(2,bboxes)
 
     # xs,ys sono di tipo IntervalTree
-    xs = createIntervalTree(xboxdict)
-    ys = createIntervalTree(yboxdict)
+    xs = Threads.@spawn createIntervalTree(fetch(xboxdict))
+    ys = Threads.@spawn createIntervalTree(fetch(yboxdict))
     
-    xcovers = boxcovering(bboxes, 1, xs)                        #lista delle intersezioni dei bb sulla coordinata x
-    ycovers = boxcovering(bboxes, 2, ys)                        #lista delle intersezioni dei bb sulla coordinata x
-    covers = [intersect(pair...) for pair in zip(xcovers,ycovers)]  #lista delle intersezioni dei bb su entrambe le coordinate
+    xcovers = Threads.@spawn boxcovering(bboxes, 1, fetch(xs))                        #lista delle intersezioni dei bb sulla coordinata x
+    ycovers = Threads.@spawn boxcovering(bboxes, 2, fetch(ys))                        #lista delle intersezioni dei bb sulla coordinata x
+    covers = [intersect(pair...) for pair in zip(fetch(xcovers),fetch(ycovers))]      #lista delle intersezioni dei bb su entrambe le coordinate
 
     if dim == 3
-		zboxdict = coordintervals(3,bboxes)
-		zs = createIntervalTree(zboxdict)
-		zcovers = boxcovering(bboxes, 3, zs)
-		covers = [intersect(pair...) for pair in zip(zcovers,covers)]
+		zboxdict = Threads.@spawn coordintervals(3,bboxes)
+		zs = Threads.@spawn createIntervalTree(fetch(zboxdict))
+		zcovers = Threads.@spawn boxcovering(bboxes, 3, fetch(zs))
+		covers = [intersect(pair...) for pair in zip(fetch(zcovers),covers)]
     end
     
     removeSelfIntersection!(covers)       #rimozione delle intersezioni con se stesso
@@ -98,13 +98,13 @@ function boundingbox(vertices::Lar.Points)
     secondDim = vertices[2,:]
     if (size(vertices,1)==3)
         thirdDim = vertices[3,:]
-        minimum = hcat([min(firstDim...), min(secondDim...), min(thirdDim...)])
-        maximum = hcat([max(firstDim...), max(secondDim...), max(thirdDim...)])
+         minimum = Threads.@spawn hcat([min(firstDim...), min(secondDim...), min(thirdDim...)])
+         maximum = Threads.@spawn hcat([max(firstDim...), max(secondDim...), max(thirdDim...)])
     else
-        minimum = hcat([min(firstDim...), min(secondDim...)])
-        maximum = hcat([max(firstDim...), max(secondDim...)])
+         minimum = Threads.@spawn hcat([min(firstDim...), min(secondDim...)])
+         maximum = Threads.@spawn hcat([max(firstDim...), max(secondDim...)])
     end
-    return minimum,maximum
+    return fetch(minimum),fetch(maximum)
  end
     
 
