@@ -5,7 +5,6 @@ using DataStructures,IntervalTrees
 include("../examples/tetGrid.jl")
 
 
-
 #Questi sono i test del package LinearAlgebraicRepresentation.
 #Il codice rivisitato continua a soddisfare tutti i test.
 @testset "spaceindex tests" begin
@@ -143,7 +142,6 @@ include("../examples/tetGrid.jl")
 			[1, 4, 2, 6], [1, 5, 2, 7], [4, 2, 6, 3], [5, 2, 7, 3]]
 	end
 end
-
 
 #test delle nuove funzioni
 @testset "test nuove funzioni" begin
